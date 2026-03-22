@@ -19,6 +19,7 @@ A clean and modern browser-based workout planning and execution app for creating
 - Data is persisted locally in the browser via `localStorage`.
 - No external dependencies — uses **native browser APIs only**.
 - Timer uses **wall-clock time** with Page Visibility API for accurate countdowns even when the tab is backgrounded.
+- Specification, planning, and implementation assisted by **Claude Code** with **Spec-Kit**.
 </br>
 
 # Medias
