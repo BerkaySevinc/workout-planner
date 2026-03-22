@@ -64,14 +64,17 @@
 /* ── Programs grid ── */
 .programs-grid-container {
   padding: var(--space-8) var(--space-6);
-  max-width: 1800px;
+  max-width: 1788px;
   margin: 0 auto;
 }
 
 .programs-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(350px, 420px));
   gap: var(--space-5);
+}
+
+.programs-grid--single-row {
   justify-content: center;
 }
 

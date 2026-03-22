@@ -57,6 +57,16 @@ export function render() {
   wrapper.appendChild(grid);
   container.appendChild(wrapper);
 
+  // Center cards when they all fit in a single row
+  const cards = grid.querySelectorAll('.card');
+  if (cards.length > 0) {
+    const firstTop = cards[0].getBoundingClientRect().top;
+    const singleRow = Array.from(cards).every(
+      c => Math.abs(c.getBoundingClientRect().top - firstTop) < 5
+    );
+    grid.classList.toggle('programs-grid--single-row', singleRow);
+  }
+
   _dndDestroy = makeSortable(grid, (fromIndex, toIndex) => {
     state.reorderPrograms(fromIndex, toIndex);
     storage.savePrograms(state.programs);
