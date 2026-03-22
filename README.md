@@ -24,3 +24,4 @@ A clean and modern browser-based workout planning and execution app for creating
 # Medias
 ![Screenshot 1](Introduction%20Media/Screenshot%201.png)
 ![Screenshot 2](Introduction%20Media/Screenshot%202.png)
+![Screenshot 3](Introduction%20Media/Screenshot%203.png)
