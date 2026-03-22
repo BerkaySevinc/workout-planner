@@ -23,8 +23,10 @@
   gap: var(--space-5);
 }
 
-.modal-dialog[role="dialog"] {
-  /* Ensure proper semantics */
+.modal-title {
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  color: var(--color-text-primary);
 }
 
 .modal-message {

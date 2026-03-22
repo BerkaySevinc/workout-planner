@@ -124,31 +124,48 @@ function _buildAddCard(grid) {
   `;
 
   const openForm = () => {
-    addCard.style.display = 'none';
+    const overlay = document.createElement('div');
+    overlay.className = 'modal-overlay';
 
-    const formWrapper = document.createElement('div');
-    formWrapper.className = 'card';
-    grid.appendChild(formWrapper);
+    const dialog = document.createElement('div');
+    dialog.className = 'modal-dialog';
+    dialog.setAttribute('role', 'dialog');
+    dialog.setAttribute('aria-modal', 'true');
+
+    const title = document.createElement('h3');
+    title.className = 'modal-title';
+    title.textContent = 'New Program';
+    dialog.appendChild(title);
+
+    const formContainer = document.createElement('div');
+    dialog.appendChild(formContainer);
+    overlay.appendChild(dialog);
+    document.body.appendChild(overlay);
 
     const form = new InlineForm(
-      formWrapper,
+      formContainer,
       [{ name: 'name', label: 'Program name', type: 'text', defaultValue: '', maxLength: 50 }],
       {
         onSubmit: values => {
           const error = validateProgramName(values.name);
           if (error) { form.setErrors({ name: error }); return; }
+          form.destroy();
+          overlay.remove();
           state.addProgram(values.name);
           storage.savePrograms(state.programs);
           render();
         },
         onCancel: () => {
           form.destroy();
-          formWrapper.remove();
-          addCard.style.display = '';
+          overlay.remove();
         },
       }
     );
     form.render();
+
+    overlay.addEventListener('click', e => {
+      if (e.target === overlay) { form.destroy(); overlay.remove(); }
+    });
   };
 
   addCard.addEventListener('click', openForm);

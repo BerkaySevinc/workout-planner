@@ -9,6 +9,7 @@
   position: sticky;
   top: 0;
   z-index: 10;
+  flex-shrink: 0;
 }
 
 .app-title {
@@ -34,7 +35,9 @@
 }
 
 .app-main {
-  min-height: calc(100dvh - 65px);
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
 }
 
 /* ── View switching ── */
@@ -44,32 +47,39 @@
 
 .view.active {
   display: block;
+  height: 100%;
+}
+
+/* Programs and detail views scroll freely */
+#view-programs-grid.active,
+#view-program-detail.active {
+  overflow-y: auto;
+}
+
+/* Timer view never scrolls */
+#view-timer-screen.active {
+  overflow: hidden;
 }
 
 /* ── Programs grid ── */
 .programs-grid-container {
-  padding: var(--space-5);
-}
-
-.programs-grid-container > h2 {
-  margin-bottom: var(--space-4);
-  color: var(--color-text-secondary);
-  font-size: var(--font-size-sm);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
+  padding: var(--space-8) var(--space-6);
+  max-width: 1800px;
+  margin: 0 auto;
 }
 
 .programs-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: var(--space-4);
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: var(--space-5);
+  justify-content: center;
 }
 
 /* ── Program detail ── */
 .program-detail-container {
   max-width: 640px;
   margin: 0 auto;
-  padding: var(--space-5);
+  padding: var(--space-6);
 }
 
 .program-detail-header {
@@ -105,7 +115,7 @@
 .exercise-list {
   display: flex;
   flex-direction: column;
-  gap: var(--space-2);
+  gap: var(--space-3);
 }
 
 .empty-state {
@@ -116,9 +126,9 @@
 }
 
 /* ── Responsive ── */
-@media (max-width: 400px) {
+@media (max-width: 480px) {
   .programs-grid-container {
-    padding: var(--space-3);
+    padding: var(--space-4);
   }
 
   .programs-grid {
@@ -126,6 +136,6 @@
   }
 
   .program-detail-container {
-    padding: var(--space-3);
+    padding: var(--space-4);
   }
 }

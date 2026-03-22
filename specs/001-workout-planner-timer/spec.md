@@ -25,16 +25,16 @@ up to the nearest minute).
 **Acceptance Scenarios**:
 
 1. **Given** the programs grid is visible, **When** the user clicks the "+"
-   card, **Then** an inline input appears for the program name.
+   card, **Then** a modal dialog appears for entering the program name.
 2. **Given** the inline input is open, **When** the user types a name and
    presses Enter, **Then** the program is saved and its card appears in the
    grid.
 3. **Given** a program card exists, **When** the user clicks Edit, **Then**
    they are taken to the program detail view where exercises can be added.
 4. **Given** the program detail view is open, **When** the user clicks the
-   "+" card at the end of the exercise list, **Then** an inline form appears
+   "+" card at the end of the exercise list, **Then** a modal dialog appears
    with fields: name, sets (default 3), reps (default 10), rest (default 30s).
-5. **Given** the inline form is filled correctly, **When** the user clicks Add,
+5. **Given** the modal form is filled correctly, **When** the user clicks Save,
    **Then** the exercise is saved and appears in the list.
 6. **Given** a program has exercises, **When** the card is viewed, **Then**
    the card shows the exercise count and the estimated duration calculated
@@ -185,6 +185,14 @@ text selection works normally.
 - Q: What does the program detail view show when a program has no exercises yet? → A: An empty state message ("No exercises yet — add your first one.") displayed above the persistent "+" card.
 - Q: What is the maximum character length for program and exercise names? → A: 50 characters for both.
 
+### Session 2026-03-22 (post-implementation)
+
+- Q: Should exercise editing be triggered by clicking the row or via an explicit button? → A: An explicit Edit button on each exercise row, revealed on hover. Row click does not trigger edit.
+- Q: Should add/edit forms appear inline or as modal popups? → A: Modal dialogs for all forms (program creation, exercise add, exercise edit).
+- Q: How should the drag-and-drop insertion position be determined? → A: Based on the dragged element's center point. As soon as the center enters another element's bounding box, the placeholder swaps — no need to cross the target's midpoint.
+- Q: Should exercises be draggable over the "+" add button? → A: No. Drag is constrained within the draggable items area only; the "+" card is excluded from the drop zone.
+- Q: What should pressing Enter do in the confirmation dialog? → A: The Delete button is focused by default, so Enter confirms deletion. The user can Tab to Cancel and press Enter to cancel instead.
+
 ## Requirements *(mandatory)*
 
 ### Functional Requirements
@@ -202,7 +210,7 @@ text selection works normally.
   buttons that are hidden by default and revealed on hover.
 - **FR-005**: A persistent "+" card MUST always be visible in the grid to
   initiate program creation.
-- **FR-006**: Clicking the "+" card MUST reveal an inline input for entering
+- **FR-006**: Clicking the "+" card MUST open a modal dialog for entering
   the program name.
 - **FR-007**: The system MUST create the program on Enter key press or Add
   button click.
@@ -212,30 +220,41 @@ text selection works normally.
 - **FR-009**: The system MUST reject duplicate program names (case-insensitive
   comparison) with an inline error.
 - **FR-010**: Programs MUST be reorderable via drag-and-drop; order changes
-  MUST be persisted to storage immediately on drop.
+  MUST be persisted to storage immediately on drop. The dragged element MUST
+  be constrained within the program grid area. Insertion position MUST be
+  determined by the dragged element's center point: as soon as the center
+  enters another card's bounding box, the placeholder swaps to that position
+  (no need to cross the midpoint).
 - **FR-011**: Deleting a program MUST require a confirmation dialog before
-  the data is removed.
+  the data is removed. The confirmation dialog MUST focus the Delete button
+  by default so that pressing Enter confirms deletion. The user MAY press
+  Tab to move focus to Cancel, then press Enter to cancel instead.
 
 **Exercise Management**
 
 - **FR-012**: The program detail view MUST list all exercises for that program.
   When no exercises exist yet, the list area MUST display an empty state
   message ("No exercises yet — add your first one.") above the "+" card.
-- **FR-013**: A "+" card at the end of the exercise list MUST open an inline
-  form with fields: name, sets (default 3), reps (default 10), rest in
-  seconds (default 30).
+- **FR-013**: A "+" card at the end of the exercise list MUST open a modal
+  dialog with form fields: name, sets (default 3), reps (default 10), rest
+  in seconds (default 30).
 - **FR-014**: The system MUST validate exercise inputs: name non-empty, name
   ≤ 50 characters, name unique within the program (case-insensitive),
   sets ≥ 1 and ≤ 20, reps ≥ 1 and ≤ 100, rest ≥ 5s and ≤ 300s.
 - **FR-015**: Validation errors MUST be shown inline, directly below the
   relevant field.
 - **FR-016**: Exercises MUST be reorderable via drag-and-drop; order changes
-  MUST be persisted immediately on drop.
-- **FR-017**: Deleting an exercise MUST require a confirmation dialog.
-- **FR-017b**: Clicking an existing exercise row MUST open the inline edit form
-  pre-filled with the exercise's current name, sets, reps, and rest values.
-  The same validation rules as Add apply. Saving MUST update the exercise in
-  place; cancelling MUST leave the exercise unchanged.
+  MUST be persisted immediately on drop. Dragging MUST be constrained within
+  the exercise list area only (the "+" add card MUST NOT be part of the
+  draggable zone). Insertion position MUST be determined by the dragged
+  element's center point entering another element's bounding box.
+- **FR-017**: Deleting an exercise MUST require a confirmation dialog. The
+  same focus behavior as FR-011 applies (Delete button focused by default).
+- **FR-017b**: Each exercise row MUST have an explicit Edit button (revealed
+  on hover). Clicking the Edit button MUST open a modal dialog pre-filled
+  with the exercise's current name, sets, reps, and rest values. The same
+  validation rules as Add apply. Saving MUST update the exercise in place;
+  cancelling MUST leave the exercise unchanged.
 
 **Workout Execution**
 

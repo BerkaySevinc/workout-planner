@@ -41,6 +41,57 @@ function validateExercise(values, excludeId = null) {
   return Object.keys(errors).length ? errors : null;
 }
 
+function _showExerciseModal(title, initialValues, onValidatedSubmit) {
+  return new Promise(function (resolve) {
+    const overlay = document.createElement('div');
+    overlay.className = 'modal-overlay';
+
+    const dialog = document.createElement('div');
+    dialog.className = 'modal-dialog';
+    dialog.setAttribute('role', 'dialog');
+    dialog.setAttribute('aria-modal', 'true');
+
+    const titleEl = document.createElement('h3');
+    titleEl.className = 'modal-title';
+    titleEl.textContent = title;
+    dialog.appendChild(titleEl);
+
+    const formContainer = document.createElement('div');
+    dialog.appendChild(formContainer);
+    overlay.appendChild(dialog);
+    document.body.appendChild(overlay);
+
+    const form = new InlineForm(formContainer, EXERCISE_FIELD_DEFS, {
+      onSubmit: values => {
+        const result = onValidatedSubmit(values, form);
+        if (result !== false) {
+          form.destroy();
+          overlay.remove();
+          resolve(true);
+        }
+      },
+      onCancel: () => {
+        form.destroy();
+        overlay.remove();
+        resolve(false);
+      },
+    });
+    form.render();
+
+    if (initialValues) {
+      form.setValues(initialValues);
+    }
+
+    overlay.addEventListener('click', e => {
+      if (e.target === overlay) {
+        form.destroy();
+        overlay.remove();
+        resolve(false);
+      }
+    });
+  });
+}
+
 export function init() {}
 
 export function render() {
@@ -74,12 +125,12 @@ export function render() {
     listEl.appendChild(empty);
   } else {
     program.exercises.forEach(exercise => {
-      const row = _buildExerciseRow(program, exercise, listEl);
+      const row = _buildExerciseRow(program, exercise);
       listEl.appendChild(row);
     });
   }
 
-  const addCard = _buildAddCard(program, listEl);
+  const addCard = _buildAddCard(program);
   listEl.appendChild(addCard);
 
   wrapper.appendChild(header);
@@ -93,7 +144,7 @@ export function render() {
   });
 }
 
-function _buildExerciseRow(program, exercise, listEl) {
+function _buildExerciseRow(program, exercise) {
   const row = document.createElement('div');
   row.className = 'exercise-row';
   row.dataset.draggable = 'true';
@@ -103,12 +154,25 @@ function _buildExerciseRow(program, exercise, listEl) {
     <span class="exercise-row__drag-handle" aria-hidden="true">⠿</span>
     <span class="exercise-row__name">${_esc(exercise.name)}</span>
     <span class="exercise-row__stats">${exercise.sets}×${exercise.reps} · ${exercise.restSeconds}s rest</span>
+    <button class="exercise-row__edit js-edit" aria-label="Edit ${_esc(exercise.name)}">Edit</button>
     <button class="exercise-row__delete js-delete" aria-label="Delete ${_esc(exercise.name)}">✕</button>
   `;
 
-  row.addEventListener('click', e => {
-    if (e.target.classList.contains('js-delete')) return;
-    _openEditForm(program, exercise, row, listEl);
+  row.querySelector('.js-edit').addEventListener('click', async e => {
+    e.stopPropagation();
+    await _showExerciseModal('Edit Exercise', {
+      name: exercise.name,
+      sets: exercise.sets,
+      reps: exercise.reps,
+      restSeconds: exercise.restSeconds,
+    }, (values, form) => {
+      const errors = validateExercise(values, exercise.id);
+      if (errors) { form.setErrors(errors); return false; }
+      state.updateExercise(program.id, exercise.id, values);
+      storage.savePrograms(state.programs);
+      return true;
+    });
+    render();
   });
 
   row.querySelector('.js-delete').addEventListener('click', async e => {
@@ -123,40 +187,7 @@ function _buildExerciseRow(program, exercise, listEl) {
   return row;
 }
 
-function _openEditForm(program, exercise, row, listEl) {
-  row.style.display = 'none';
-
-  const formWrapper = document.createElement('div');
-  row.parentNode.insertBefore(formWrapper, row);
-
-  const form = new InlineForm(
-    formWrapper,
-    EXERCISE_FIELD_DEFS,
-    {
-      onSubmit: values => {
-        const errors = validateExercise(values, exercise.id);
-        if (errors) { form.setErrors(errors); return; }
-        state.updateExercise(program.id, exercise.id, values);
-        storage.savePrograms(state.programs);
-        render();
-      },
-      onCancel: () => {
-        form.destroy();
-        formWrapper.remove();
-        row.style.display = '';
-      },
-    }
-  );
-  form.render();
-  form.setValues({
-    name: exercise.name,
-    sets: exercise.sets,
-    reps: exercise.reps,
-    restSeconds: exercise.restSeconds,
-  });
-}
-
-function _buildAddCard(program, listEl) {
+function _buildAddCard(program) {
   const addCard = document.createElement('div');
   addCard.className = 'card card--add';
   addCard.setAttribute('tabindex', '0');
@@ -167,36 +198,20 @@ function _buildAddCard(program, listEl) {
     <span class="add-label">Add Exercise</span>
   `;
 
-  const openForm = () => {
-    addCard.style.display = 'none';
-
-    const formWrapper = document.createElement('div');
-    listEl.appendChild(formWrapper);
-
-    const form = new InlineForm(
-      formWrapper,
-      EXERCISE_FIELD_DEFS,
-      {
-        onSubmit: values => {
-          const errors = validateExercise(values);
-          if (errors) { form.setErrors(errors); return; }
-          state.addExercise(program.id, values);
-          storage.savePrograms(state.programs);
-          render();
-        },
-        onCancel: () => {
-          form.destroy();
-          formWrapper.remove();
-          addCard.style.display = '';
-        },
-      }
-    );
-    form.render();
+  const openModal = async () => {
+    await _showExerciseModal('Add Exercise', null, (values, form) => {
+      const errors = validateExercise(values);
+      if (errors) { form.setErrors(errors); return false; }
+      state.addExercise(program.id, values);
+      storage.savePrograms(state.programs);
+      return true;
+    });
+    render();
   };
 
-  addCard.addEventListener('click', openForm);
+  addCard.addEventListener('click', openModal);
   addCard.addEventListener('keydown', e => {
-    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openForm(); }
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openModal(); }
   });
 
   return addCard;
