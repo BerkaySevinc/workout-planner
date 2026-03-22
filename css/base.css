@@ -1,0 +1,49 @@
+html {
+  transition:
+    background var(--transition-slow),
+    color var(--transition-slow);
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-text-primary);
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-base);
+  line-height: 1.5;
+  min-height: 100dvh;
+  /* Prevent text selection globally */
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Restore text selection inside form elements */
+input,
+textarea,
+select,
+[contenteditable] {
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+h1 {
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+h2 {
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+}
+
+h3 {
+  font-size: var(--font-size-base);
+  font-weight: 600;
+}
+
+/* Focus ring */
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}

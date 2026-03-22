@@ -1,0 +1,207 @@
+/* ── Base card ── */
+.card {
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+  border: 1px solid var(--color-border);
+  transition:
+    box-shadow var(--transition-fast),
+    border-color var(--transition-fast),
+    transform var(--transition-fast);
+  position: relative;
+}
+
+.card:hover {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  border-color: var(--color-accent);
+}
+
+/* ── Card actions (hover-reveal) ── */
+.card-actions {
+  display: flex;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+}
+
+.card:hover .card-actions,
+.card:focus-within .card-actions {
+  opacity: 1;
+}
+
+/* ── Add card ("+") ── */
+.card--add {
+  border-style: dashed;
+  border-color: var(--color-border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 140px;
+  cursor: pointer;
+  color: var(--color-text-secondary);
+  gap: var(--space-2);
+  transition:
+    border-color var(--transition-fast),
+    color var(--transition-fast),
+    background var(--transition-fast);
+}
+
+.card--add:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+  background: color-mix(in srgb, var(--color-accent) 6%, transparent);
+  box-shadow: none;
+}
+
+.card--add .add-icon {
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.card--add .add-label {
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+}
+
+/* ── Program card body ── */
+.program-card {
+  min-height: 140px;
+  display: flex;
+  flex-direction: column;
+}
+
+.program-card__name {
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  margin-bottom: var(--space-2);
+  word-break: break-word;
+}
+
+.program-card__meta {
+  display: flex;
+  gap: var(--space-3);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+  flex: 1;
+}
+
+.program-card__meta span {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+/* ── Action buttons on cards ── */
+.btn-action {
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  transition: background var(--transition-fast), color var(--transition-fast);
+}
+
+.btn-action--edit {
+  background: transparent;
+  color: var(--color-text-secondary);
+  border: 1px solid var(--color-border);
+}
+
+.btn-action--edit:hover {
+  background: var(--color-surface-hover);
+  color: var(--color-text-primary);
+}
+
+.btn-action--delete {
+  background: transparent;
+  color: var(--color-danger);
+  border: 1px solid transparent;
+}
+
+.btn-action--delete:hover {
+  background: color-mix(in srgb, var(--color-danger) 12%, transparent);
+}
+
+.btn-action--start {
+  background: var(--color-accent);
+  color: #fff;
+  border: 1px solid transparent;
+  margin-left: auto;
+}
+
+.btn-action--start:hover {
+  background: var(--color-accent-hover);
+}
+
+.btn-action--start:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+/* ── Exercise row ── */
+.exercise-row {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4);
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  cursor: pointer;
+  transition: background var(--transition-fast), border-color var(--transition-fast);
+}
+
+.exercise-row:hover {
+  background: var(--color-surface-hover);
+  border-color: var(--color-accent);
+}
+
+.exercise-row__drag-handle {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-lg);
+  cursor: grab;
+  flex-shrink: 0;
+}
+
+.exercise-row__name {
+  font-weight: 500;
+  flex: 1;
+  word-break: break-word;
+}
+
+.exercise-row__stats {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.exercise-row__delete {
+  color: var(--color-danger);
+  border-radius: var(--radius-sm);
+  padding: var(--space-1);
+  opacity: 0;
+  transition: opacity var(--transition-fast), background var(--transition-fast);
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.exercise-row:hover .exercise-row__delete {
+  opacity: 1;
+}
+
+.exercise-row__delete:hover {
+  background: color-mix(in srgb, var(--color-danger) 12%, transparent);
+}
+
+/* ── Drag state ── */
+.is-dragging {
+  opacity: 0.4;
+  cursor: grabbing;
+}
+
+.drag-over {
+  border-color: var(--color-accent);
+  background: color-mix(in srgb, var(--color-accent) 6%, var(--color-surface));
+}

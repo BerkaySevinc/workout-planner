@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Workout Planner</title>
+
+  <!-- Theme bootstrap: apply saved theme before first paint to avoid flash -->
+  <script>
+    (function () {
+      var saved = localStorage.getItem('wpt_theme');
+      var theme = saved || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
+  </script>
+
+  <link rel="stylesheet" href="css/variables.css" />
+  <link rel="stylesheet" href="css/reset.css" />
+  <link rel="stylesheet" href="css/themes.css" />
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+  <link rel="stylesheet" href="css/components/card.css" />
+  <link rel="stylesheet" href="css/components/forms.css" />
+  <link rel="stylesheet" href="css/components/modal.css" />
+  <link rel="stylesheet" href="css/components/timer.css" />
+  <link rel="stylesheet" href="css/components/animations.css" />
+</head>
+<body>
+  <header class="app-header">
+    <h1 class="app-title">💪 Workout Planner</h1>
+    <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme"></button>
+  </header>
+
+  <main class="app-main">
+    <div id="view-programs-grid" class="view"></div>
+    <div id="view-program-detail" class="view"></div>
+    <div id="view-timer-screen" class="view"></div>
+  </main>
+
+  <script type="module" src="js/app.js"></script>
+
+  <!-- Fallback: runs ONLY if the browser does not support ES modules -->
+  <script nomodule>
+    document.body.innerHTML +=
+      '<p style="position:fixed;bottom:0;left:0;right:0;background:#e05c5c;color:#fff;padding:12px;text-align:center;font-family:sans-serif;z-index:9999">' +
+      '⚠️ ES Modules are not supported in this browser or are blocked by CORS. ' +
+      'Open the file via a local server (e.g. VS Code Live Server) or use Chrome/Edge.' +
+      '</p>';
+  </script>
+</body>
+</html>

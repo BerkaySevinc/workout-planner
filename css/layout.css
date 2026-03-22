@@ -1,0 +1,131 @@
+/* ── App shell ── */
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-4) var(--space-5);
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-surface);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.app-title {
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.theme-toggle {
+  font-size: var(--font-size-lg);
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background var(--transition-fast);
+  color: var(--color-text-primary);
+}
+
+.theme-toggle:hover {
+  background: var(--color-surface-hover);
+}
+
+.app-main {
+  min-height: calc(100dvh - 65px);
+}
+
+/* ── View switching ── */
+.view {
+  display: none;
+}
+
+.view.active {
+  display: block;
+}
+
+/* ── Programs grid ── */
+.programs-grid-container {
+  padding: var(--space-5);
+}
+
+.programs-grid-container > h2 {
+  margin-bottom: var(--space-4);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.programs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: var(--space-4);
+}
+
+/* ── Program detail ── */
+.program-detail-container {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: var(--space-5);
+}
+
+.program-detail-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-5);
+}
+
+.back-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-md);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-lg);
+  flex-shrink: 0;
+  transition: background var(--transition-fast), color var(--transition-fast);
+}
+
+.back-btn:hover {
+  background: var(--color-surface-hover);
+  color: var(--color-text-primary);
+}
+
+.program-detail-header h2 {
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+}
+
+.exercise-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.empty-state {
+  text-align: center;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+  padding: var(--space-6) 0;
+}
+
+/* ── Responsive ── */
+@media (max-width: 400px) {
+  .programs-grid-container {
+    padding: var(--space-3);
+  }
+
+  .programs-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .program-detail-container {
+    padding: var(--space-3);
+  }
+}

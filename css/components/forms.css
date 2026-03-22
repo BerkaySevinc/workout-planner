@@ -1,0 +1,133 @@
+/* ── Inline form container ── */
+.inline-form {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+}
+
+.inline-form--card {
+  /* When rendered as a card in the grid */
+  min-height: 140px;
+}
+
+/* ── Field wrapper ── */
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  margin-bottom: var(--space-3);
+}
+
+.form-field:last-of-type {
+  margin-bottom: 0;
+}
+
+.form-field label {
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--color-text-secondary);
+}
+
+/* ── Inputs ── */
+input[type="text"],
+input[type="number"] {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  color: var(--color-text-primary);
+  font-size: var(--font-size-base);
+  padding: var(--space-2) var(--space-3);
+  width: 100%;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus {
+  outline: none;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent) 25%, transparent);
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  opacity: 1;
+}
+
+/* ── Inline error ── */
+.form-error {
+  color: var(--color-danger);
+  font-size: var(--font-size-sm);
+  margin-top: var(--space-1);
+  min-height: 1.2em;
+}
+
+/* ── Row of numeric fields ── */
+.form-fields-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: var(--space-3);
+}
+
+/* ── Form action buttons ── */
+.form-actions {
+  display: flex;
+  gap: var(--space-2);
+  margin-top: var(--space-4);
+}
+
+/* ── Button variants ── */
+.btn-primary {
+  background: var(--color-accent);
+  color: #fff;
+  border-radius: var(--radius-md);
+  padding: var(--space-2) var(--space-4);
+  font-weight: 600;
+  font-size: var(--font-size-base);
+  border: none;
+  transition: background var(--transition-fast);
+}
+
+.btn-primary:hover {
+  background: var(--color-accent-hover);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--color-text-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-2) var(--space-4);
+  font-size: var(--font-size-base);
+  transition: background var(--transition-fast), color var(--transition-fast);
+}
+
+.btn-ghost:hover {
+  background: var(--color-surface-hover);
+  color: var(--color-text-primary);
+}
+
+.btn-danger {
+  background: var(--color-danger);
+  color: #fff;
+  border-radius: var(--radius-md);
+  padding: var(--space-2) var(--space-4);
+  font-weight: 600;
+  font-size: var(--font-size-base);
+  border: none;
+  transition: background var(--transition-fast);
+}
+
+.btn-danger:hover {
+  background: var(--color-danger-hover);
+}
+
+@media (max-width: 400px) {
+  .form-fields-row {
+    grid-template-columns: 1fr;
+  }
+}

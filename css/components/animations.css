@@ -1,0 +1,50 @@
+/* ── Keyframes ── */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Applied animations ── */
+.view.active {
+  animation: fadeSlideUp var(--transition-base) ease both;
+}
+
+.modal-overlay {
+  animation: fadeIn 150ms ease both;
+}
+
+.modal-dialog {
+  animation: scaleIn 200ms ease both;
+}
+
+.inline-form {
+  animation: slideDown var(--transition-fast) ease both;
+}
+
+.completion-screen {
+  animation: fadeSlideUp var(--transition-base) ease both;
+}
+
+/* ── Reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
