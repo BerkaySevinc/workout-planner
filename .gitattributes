@@ -1,0 +1,2 @@
+# Mark vendored/tooling scripts so GitHub Linguist ignores them
+.specify/** linguist-vendored
